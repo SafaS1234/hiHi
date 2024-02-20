@@ -8,13 +8,15 @@ using namespace std;
 
 //function to make the strings lowercase and compare them
 int strcmp_case_insensitive (const string& string1, const string& string2, 
-                            bool space = false)
+                            bool space = false, 
+                            size_t userMax = string::npos)
 {
     char word1, word2;
     string string1NoSpace, string2NoSpace;
 
     //makes user input lowercase
-    for (size_t i = 0; i < min(string1.length(),string2.length()); i++)
+    for (size_t i = 0; i < min(min(string1.length(),string2.length()), 
+         userMax); i++)
     {
 
         word1 = tolower(string1[i]);
@@ -31,20 +33,43 @@ int strcmp_case_insensitive (const string& string1, const string& string2,
         }
     }
 
-    //compares the strings
-    if (string1.length() < string2.length())
+    if (userMax != string::npos && userMax < min(string1.length(), 
+        string2.length()))
     {
-        return -1;
-    }
-
-    else if (string1.length() > string2.length())
-    {
-        return 1;
+        if (tolower(string1[userMax]) < tolower(string2[userMax]))
+        {
+            return -1;
+        }
+        else
+        {
+            if (tolower(string2[userMax]) < tolower(string1[userMax]))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 
     else
     {
-        return 0;
+        //compares the strings
+        if (string1.length() < string2.length())
+        {
+            return -1;
+        }
+
+        else if (string1.length() > string2.length())
+        {
+            return 1;
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 }
 
